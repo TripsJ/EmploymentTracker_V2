@@ -5,5 +5,7 @@ public enum USER_STATUS {
 
     SUCCESS,
     USER_ALREADY_EXISTS,
-    FAILURE
+    FAILURE,
+    BAD_REQUEST
+    
 }

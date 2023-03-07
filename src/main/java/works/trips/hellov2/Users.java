@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 @Table
@@ -19,11 +21,17 @@ public class Users {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long Id;
+	@NotBlank(message = "Username is mandatory")
 	private String username;
+	@NotBlank(message = "Password is mandatory")
+	@Size(min = 12, message = "Validation Error: Size too short")
 	private String password;
+	@NotBlank(message = "Firstname is mandatory")
 	private String firstname;
+	@NotBlank(message = "Lastname is mandatory")
 	private String lastname;
 	private String role;
+	@NotBlank(message = "E Mail is mandatory")
 	private String email;
 	
 	protected Users() { } // JPA needs this but it should never ever be used
