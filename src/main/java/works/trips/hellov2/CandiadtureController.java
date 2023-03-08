@@ -19,34 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
-	
-	@Autowired
-	private UserRepository userRepo;
-	@GetMapping("/login")
-	public String login() {
-		
-		String Token = JsonWebToken.create("Usernam","Role");
-		return Token;
-
+@RequestMapping("/app")
+public class CandiadtureController {
+    @Autowired
+    private CandidatureRepository candiRepo;
+    
+	@GetMapping("/")
+	public String getall() {
+	    Iterable<Candidature> candidaturesIterable = candiRepo.findAll();
+	    return candidaturesIterable.toString();
 	}
 	
-	@PostMapping("/register")
-	public USER_STATUS registerUser(@Validated @Valid @RequestBody Users newUser) {
-        Iterable<Users> users = userRepo.findAll();
-        System.out.println("New user: " + newUser.toString());
-        for (Users user : users) {
-            System.out.println("Registered user: " + newUser.toString());
-            if (user.equals(newUser)) {
-                System.out.println("User Already exists!");
-                return USER_STATUS.USER_ALREADY_EXISTS;
-            }
-        }
-        userRepo.save(newUser);
-        return USER_STATUS.SUCCESS;
-    }
-	
+	@PostMapping("/add")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Candidature  add(@Validated @Valid @RequestBody Candidature newCandidature) {
+	    candiRepo.save(newCandidature);
+	    return newCandidature;
+	    
+	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -60,5 +50,8 @@ public class AuthController {
 	    });
 	    return errors;
 	}
+	
+	
+    
 
 }

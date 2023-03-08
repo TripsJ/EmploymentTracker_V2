@@ -1,12 +1,16 @@
 package works.trips.hellov2;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,6 +37,9 @@ public class Users {
 	private String role;
 	@NotBlank(message = "E Mail is mandatory")
 	private String email;
+	@OneToMany
+	@JoinColumn(name = "candidature_id")
+	private List <Candidature> candidatures;
 	
 	protected Users() { } // JPA needs this but it should never ever be used
 	
