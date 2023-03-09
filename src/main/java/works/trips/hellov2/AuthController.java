@@ -9,7 +9,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +23,23 @@ public class AuthController {
 	
 	@Autowired
 	private UserRepository userRepo;
-	@GetMapping("/login")
-	public String login() {
+	@PostMapping("/login")
+	public String login(@RequestBody LoginRequest loginRequest) {
+	    Iterable<Users> users = userRepo.findAll();
+	    for (Users user : users) {
+		String reguser = user.getUsername();
+		String regpassword = user.getPassword();
+			if (reguser.equals(loginRequest.getUsername())&& regpassword.equals(loginRequest.getPassword())){
+			    String Token = JsonWebToken.create(user.getUsername(),user.getRole());
+			    return Token;
+		}
+			
+	    }
+	    return "invalid login";
+	    
+	    
 		
-		String Token = JsonWebToken.create("Usernam","Role");
-		return Token;
+		
 
 	}
 	
