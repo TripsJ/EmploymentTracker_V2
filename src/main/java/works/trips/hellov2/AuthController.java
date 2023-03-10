@@ -23,6 +23,7 @@ public class AuthController {
 	
 	@Autowired
 	private UserRepository userRepo;
+
 	@PostMapping("/login")
 	public String login(@RequestBody LoginRequest loginRequest) {
 	    Iterable<Users> users = userRepo.findAll();
@@ -57,6 +58,15 @@ public class AuthController {
         userRepo.save(newUser);
         return USER_STATUS.SUCCESS;
     }
+	
+	
+//	@GetMapping("/val")
+//	public String val(@RequestHeader (name="Authorization") String token) {
+//	    if( JsonWebToken.verifyJwtSignature(token)) {
+//		return "True";
+//	    };
+//	    return "False";}
+	
 	
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

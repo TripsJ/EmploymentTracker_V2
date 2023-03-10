@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -48,12 +49,29 @@ public class JsonWebToken {
 	    return claims;
 	}
 	
+
+	
 	public static String getUsername(String token) {
 		return (String) decodeJWT(token).get("username");
 	}
 	
 	public static String getRole(String token) {
 		return  (String) decodeJWT(token).get("role");	}
+	
+	public static boolean verifyJwtSignature(String jwtString) {
+	        boolean isValid = false;
+
+	        try {
+	            Jwts.parser()
+	                    .setSigningKey(SECRET_KEY.getBytes())
+	                    .parseClaimsJws(jwtString);
+	            isValid = true;
+	        } catch (JwtException e) {
+	            // Handle invalid JWT signature exception
+	        }
+
+	        return isValid;
+	    }
 	
 	
 }

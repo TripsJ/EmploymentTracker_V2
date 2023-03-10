@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,14 +26,15 @@ public class CandiadtureController {
     private CandidatureRepository candiRepo;
     
 	@GetMapping("/")
-	public String getall() {
+	public String getall(@RequestHeader (name="Authorization") String token) {
+	    System.out.println(JsonWebToken.getUsername(token));
 	    Iterable<Candidature> candidaturesIterable = candiRepo.findAll();
 	    return candidaturesIterable.toString();
 	}
 	
 	@PostMapping("/add")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Candidature  add(@Validated @Valid @RequestBody Candidature newCandidature) {
+	public Candidature  add(@Validated @Valid @RequestBody Candidature newCandidature , @RequestHeader (name="Authorization") String token) {
 	    candiRepo.save(newCandidature);
 	    return newCandidature;
 	    
