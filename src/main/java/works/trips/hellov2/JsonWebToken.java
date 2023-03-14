@@ -18,7 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JsonWebToken {
 	private static String SECRET_KEY = "randomldsldqjfqdkqslhqksjhqsxfgdeiflskfsjqlskùdj";
 	
-	public static String create(String username, String role) {
+	public static String create(String username, String role, Long id) {
 		Instant currentTime = Instant.now();
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 		Key signingKey;
@@ -34,6 +34,7 @@ public class JsonWebToken {
 				  .setSubject("Authentication")
 				  .claim("username", username)
 				  .claim("role", role)
+				  .claim("id", id)
 				  .setIssuedAt(Date.from(currentTime))
 				  .setExpiration(Date.from(currentTime.plus(5l, ChronoUnit.MINUTES)))
 				  .signWith(signingKey)
@@ -56,7 +57,12 @@ public class JsonWebToken {
 	}
 	
 	public static String getRole(String token) {
-		return  (String) decodeJWT(token).get("role");	}
+		return  (String) decodeJWT(token).get("role");	
+	}
+	
+	public static Integer getId(String token) {
+	    return (Integer) decodeJWT(token).get("id");
+	}
 	
 	public static boolean verifyJwtSignature(String jwtString) {
 	        boolean isValid = false;
@@ -72,6 +78,11 @@ public class JsonWebToken {
 
 	        return isValid;
 	    }
+
+
+
+
+
 	
 	
 }

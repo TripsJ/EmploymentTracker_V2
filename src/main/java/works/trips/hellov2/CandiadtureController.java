@@ -24,19 +24,28 @@ import jakarta.validation.Valid;
 public class CandiadtureController {
     @Autowired
     private CandidatureRepository candiRepo;
+    @Autowired
+    private UserRepository userRepository;
     
 	@GetMapping("/")
 	public String getall(@RequestHeader (name="Authorization") String token) {
 	    System.out.println(JsonWebToken.getUsername(token));
-	    Iterable<Candidature> candidaturesIterable = candiRepo.findAll();
+	    Iterable<Candidature> candidaturesIterable = candiRepo.findByusers_id(JsonWebToken.getId(token));
 	    return candidaturesIterable.toString();
 	}
 	
 	@PostMapping("/add")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Candidature  add(@Validated @Valid @RequestBody Candidature newCandidature , @RequestHeader (name="Authorization") String token) {
+	    newCandidature.setUsers(userRepository.findById(JsonWebToken.getId(token)));
 	    candiRepo.save(newCandidature);
 	    return newCandidature;
+	    
+	}
+	
+	@PostMapping("/test")
+	public void test(@RequestHeader (name="Authorization") String token){
+	    System.out.println();
 	    
 	}
 	

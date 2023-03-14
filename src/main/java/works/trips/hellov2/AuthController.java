@@ -31,7 +31,7 @@ public class AuthController {
 		String reguser = user.getUsername();
 		String regpassword = user.getPassword();
 			if (reguser.equals(loginRequest.getUsername())&& regpassword.equals(loginRequest.getPassword())){
-			    String Token = JsonWebToken.create(user.getUsername(),user.getRole());
+			    String Token = JsonWebToken.create(user.getUsername(),user.getRole(),user.getId());
 			    return Token;
 		}
 			
