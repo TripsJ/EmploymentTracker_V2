@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +32,7 @@ public class Users {
 	private String username;
 	@NotBlank(message = "Password is mandatory")
 	@Size(min = 12, message = "Validation Error: Size too short")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	@NotBlank(message = "Firstname is mandatory")
 	private String firstname;
